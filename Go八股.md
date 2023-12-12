@@ -1,4 +1,4 @@
-# 数组和切片有什么区别
+ # 数组和切片有什么区别
 
 数组定长，大小不可改变，长度是数组类型的一部分；切片可以动态扩容，类型与长度无关。Slice底层数据是数组，是对数组的封装
 
@@ -163,4 +163,37 @@ C++虚函数表是在编译期生成的，Go的fun是在运行期间动态生成
 不要通过共享内存来通信，而要通过通信来实现内存共享
 这就是Go的并发哲学，依赖CSP模型，基于channel实现。Go的并发模型用goroutine和channel替代，goroutine和线程类似，channel和mutex类似
 Go的并发原则，尽量使用channel，把goroutine当免费资源，随便用
-# Channel底层数据结构是什么
+## 编译器自动检测类型是否实现接口
+`var _ io.Writer = (*myWriter)(nil)
+编译器会由此检查 myWriter 类型是否实现了 io.Writer 接口。
+# Channel的底层数据结构
+```
+type hchan struct {
+	// chan 里元素数量
+	qcount   uint
+	// chan 底层循环数组的长度
+	dataqsiz uint
+	// 指向底层循环数组的指针
+	// 只针对有缓冲的 channel
+	buf      unsafe.Pointer
+	// chan 中元素大小
+	elemsize uint16
+	// chan 是否被关闭的标志
+	closed   uint32
+	// chan 中元素类型
+	elemtype *_type // element type
+	// 已发送元素在循环数组中的索引
+	sendx    uint   // send index
+	// 已接收元素在循环数组中的索引
+	recvx    uint   // receive index
+	// 等待接收的 goroutine 队列
+	recvq    waitq  // list of recv waiters
+	// 等待发送的 goroutine 队列
+	sendq    waitq  // list of send waiters
+
+	// 保护 hchan 中所有字段
+	lock mutex
+}
+```
+buf指向底层循环数组，只有缓冲型channel才有；sendx，recvx指向底层循环数组，表示当前可以发送和接受的元素位置引索值；sendq，recvq分别表示被阻塞的goroutine，这些goroutine由于尝试读取channel或向channel发送数据被阻塞；waitq是sudog的一个双向链表，sudog是对goroutine的一个分装；lock用来保证每个读或写channel的操作都是原子的
+# 向channel发送数据的过程是什么
