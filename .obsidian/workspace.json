@@ -20,6 +20,18 @@
             }
           },
           {
+            "id": "3ed2acb3261b962a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Note.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
             "id": "8eea594be52c3fa6",
             "type": "leaf",
             "state": {
@@ -93,12 +105,24 @@
         "type": "tabs",
         "children": [
           {
+            "id": "197003fddae38853",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Note.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
             "id": "012b117a5a5faad8",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Go八股.md",
+                "file": "Note.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -110,43 +134,22 @@
             }
           },
           {
-            "id": "197003fddae38853",
-            "type": "leaf",
-            "state": {
-              "type": "outgoing-link",
-              "state": {
-                "file": "Go八股.md",
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
-              }
-            }
-          },
-          {
             "id": "715ca95acb93ea02",
             "type": "leaf",
             "state": {
               "type": "tag",
               "state": {
                 "sortOrder": "frequency",
-                "useHierarchy": true
-              }
-            }
-          },
-          {
-            "id": "8c1984dc15442da2",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "Go八股.md"
+                "useHierarchy": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 300,
+    "width": 200,
     "collapsed": true
   },
   "left-ribbon": {
@@ -159,10 +162,12 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "8eea594be52c3fa6",
+  "active": "3ed2acb3261b962a",
   "lastOpenFiles": [
-    "图解系统.md",
     "Go八股.md",
+    "图解系统.md",
+    "Note.md",
+    "2023-12-14.md",
     "图解网络.md",
     "场景题.md",
     "到处收集.md",
