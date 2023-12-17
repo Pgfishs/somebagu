@@ -1,11 +1,8 @@
- # 数组和切片有什么区别
+# 数组和切片有什么区别
 
 数组定长，大小不可改变，长度是数组类型的一部分；切片可以动态扩容，类型与长度无关。Slice底层数据是数组，是对数组的封装
-
 数组是一片连续的内存，slice是结构体，包含三个字段：长度、容量、底层数组
-
 **一个底层数组可以被多个slice指向，对slice操作有可能影响别的slice**
-
 # slice扩容机制（append）
 
 1.18之前
@@ -201,3 +198,4 @@ type hchan struct {
 }
 ```
 buf指向底层循环数组，只有缓冲型channel才有；sendx，recvx指向底层循环数组，表示当前可以发送和接受的元素位置引索值；sendq，recvq分别表示被阻塞的goroutine，这些goroutine由于尝试读取channel或向channel发送数据被阻塞；waitq是sudog的一个双向链表，sudog是对goroutine的一个分装；lock用来保证每个读或写channel的操作都是原子的
+# Channel的读写
