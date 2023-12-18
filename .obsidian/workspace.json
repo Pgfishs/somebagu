@@ -13,14 +13,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "图解系统.md",
+                "file": "到处收集.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "3eab6160a755746f",
+            "id": "3f0bd463ceddb6dd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "到处收集.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "a09b97437fad3a20",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -98,7 +110,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Go八股.md",
+                "file": "到处收集.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -110,7 +122,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Go八股.md",
+                "file": "到处收集.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -129,6 +141,16 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": false
+              }
+            }
+          },
+          {
+            "id": "67723782ffce7692",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "到处收集.md"
               }
             }
           }
@@ -150,17 +172,22 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "3eab6160a755746f",
+  "active": "3f0bd463ceddb6dd",
   "lastOpenFiles": [
+    "图解网络.md",
+    "到处收集.md",
+    "场景题.md",
     "图解系统.md",
-    "Go八股.md",
     "Mysql必知必会.md",
+    "Go八股.md",
+    "Pasted image 20231218214427.png",
+    "Pasted image 20231217225931.png",
+    "images/Pasted image 20231217225931.png",
+    "images",
+    "新建文件夹",
+    "README.md",
     "Note.md",
     "2023-12-14.md",
-    "图解网络.md",
-    "场景题.md",
-    "到处收集.md",
-    "README.md",
     "未命名.canvas",
     "未命名"
   ]

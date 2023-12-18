@@ -199,3 +199,19 @@ type hchan struct {
 ```
 buf指向底层循环数组，只有缓冲型channel才有；sendx，recvx指向底层循环数组，表示当前可以发送和接受的元素位置引索值；sendq，recvq分别表示被阻塞的goroutine，这些goroutine由于尝试读取channel或向channel发送数据被阻塞；waitq是sudog的一个双向链表，sudog是对goroutine的一个分装；lock用来保证每个读或写channel的操作都是原子的
 # Channel的读写
+### 写
+如果channel是nil，不能阻塞直接返回false；对于不阻塞的send，检测失败场景，channel是非缓冲型且等待接收队列里没有goroutine，或是缓冲型但已经装满了元素；
+- 如果检测到channel已关闭，直接panic
+- 如果能从等待接收队列出队一个sudog（代表一个goroutine），说明此时channel是空的，没有元素，才会有等待接收者。这时会调用send函数将元素从发送者栈拷贝到接收者栈，由`sendDirect`完成
+`sendDirect`涉及到一个goroutine直接写另一个栈的操作，一般不同的栈都是独有的，也违反了GC一些假设；写的过程中通过写屏障保证正确完成操作，好处是减少了一次内存copy：不用先拷贝到channel的buf，直接发到接收者；然后解锁、唤醒接收者，等待调度器
+判断缓冲区是否塞满，如果满了就把sender关起来（goroutine阻塞住）；如果真的被阻塞，先构造一个sudog入队，然后调用goparkunlock将当前goroutine挂起，等待唤醒
+待发送的元素地址存储在sudog中，也就是当前的goroutine中
+### 读
+接受操作有两种写法，带ok反应channel是否关闭；不带ok，当接收到相应类型的零值是无法知道是真实接收者发来的值还是channel关闭后返回的默认零值
+`chanrecv1`处理不带ok的情况，`chanrecv2`通过返回received反应channel是否被关闭，接收值放到参数elem指向的地址，最后转向了chanrecv函数
+等待队列中有goroutine存在，说明buf是满的
+- 非缓冲channel，直接将内存拷贝从sender goroutine到receiver goroutine
+- 缓冲channel但是buf满了，接收到循环数组头部的元素，并将发送者元素放到循环数组尾部
+最后调出sudog中的goroutine，调用goready改成runnable，待发送者被唤醒，等待调度器调度
+- 如果buf还有数据，正常的将buf里接受游标处的数据拷贝到接受数据的地址
+- 如果block值是false，直接返回
