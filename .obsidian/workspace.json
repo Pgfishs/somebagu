@@ -13,19 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "到处收集.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "3f0bd463ceddb6dd",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "到处收集.md",
+                "file": "图解系统.md",
                 "mode": "source",
                 "source": false
               }
@@ -43,8 +31,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -110,7 +97,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "到处收集.md",
+                "file": "图解系统.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -122,7 +109,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "到处收集.md",
+                "file": "图解系统.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -150,7 +137,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "到处收集.md"
+                "file": "图解系统.md"
               }
             }
           }
@@ -172,10 +159,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "3f0bd463ceddb6dd",
+  "active": "d353214981ac9517",
   "lastOpenFiles": [
-    "图解网络.md",
     "到处收集.md",
+    "图解网络.md",
     "场景题.md",
     "图解系统.md",
     "Mysql必知必会.md",
