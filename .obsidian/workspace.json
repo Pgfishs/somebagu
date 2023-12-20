@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Mysql必知必会.md",
+                "file": "Note.md",
                 "mode": "source",
                 "source": false
               }
@@ -110,7 +110,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Mysql必知必会.md",
+                "file": "Note.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -122,7 +122,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Mysql必知必会.md",
+                "file": "Note.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Mysql必知必会.md"
+                "file": "Note.md"
               }
             }
           }
@@ -174,10 +174,10 @@
   },
   "active": "4b34c3afbdf86370",
   "lastOpenFiles": [
+    "Mysql必知必会.md",
     "Go八股.md",
     "图解系统.md",
     "Pasted image 20231219231556.png",
-    "Mysql必知必会.md",
     "到处收集.md",
     "图解网络.md",
     "场景题.md",
