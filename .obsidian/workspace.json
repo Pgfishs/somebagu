@@ -44,7 +44,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -110,7 +110,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Note.md",
+                "file": "Go八股.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -122,7 +122,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Note.md",
+                "file": "Go八股.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Note.md"
+                "file": "Go八股.md"
               }
             }
           }
@@ -172,11 +172,13 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "4b34c3afbdf86370",
+  "active": "d353214981ac9517",
   "lastOpenFiles": [
-    "Mysql必知必会.md",
-    "Go八股.md",
+    "images/Pasted image 20231222164504.png",
     "图解系统.md",
+    "Go八股.md",
+    "Note.md",
+    "Mysql必知必会.md",
     "Pasted image 20231219231556.png",
     "到处收集.md",
     "图解网络.md",
@@ -187,7 +189,6 @@
     "images",
     "新建文件夹",
     "README.md",
-    "Note.md",
     "2023-12-14.md",
     "未命名.canvas",
     "未命名"

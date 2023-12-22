@@ -215,3 +215,13 @@ buf指向底层循环数组，只有缓冲型channel才有；sendx，recvx指向
 最后调出sudog中的goroutine，调用goready改成runnable，待发送者被唤醒，等待调度器调度
 - 如果buf还有数据，正常的将buf里接受游标处的数据拷贝到接受数据的地址
 - 如果block值是false，直接返回
+
+# 关闭一个Channel的过程
+检测channel是否为空/关闭，然后将channel上锁，把channel的sender和receiver都连成一个sudog链表再解锁，最后再把sudog全部唤醒
+recvq和sendq中分别保存了阻塞发送者和接收者，关闭channel后，等待接收者会收到一个相应类型的零值，等待发送者则会直接panic
+唤醒后，sender检测到channel已经关闭，panic；receiver进行扫尾工作后返回。selected返回true，received根据channel是否关闭，返回不同的值，channel关闭received为false，否则为true
+# 从关闭的channel仍能读出数据吗
+从有缓冲的channel读数据，当channel关闭仍能读出有效值，当返回的ok为false时，读出数据才是无效的
+# 操作channel的结果
+![[Pasted image 20231222164504.png]]
+# 优雅关闭channel
