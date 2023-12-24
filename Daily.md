@@ -5,3 +5,9 @@
 idontknow
 # 12.20
 庆祝1.15考完，今天gap一天
+# 12.24
+学到了个TODO的语法
+`- [ ] xxxxx`
+- [ ] 用起来是这样的
+- [x] TD
+&Jvavguide上有挺多八股

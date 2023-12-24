@@ -225,3 +225,12 @@ recvq和sendq中分别保存了阻塞发送者和接收者，关闭channel后，
 # 操作channel的结果
 ![[Pasted image 20231222164504.png]]
 # 优雅关闭channel
+- 不改变channel自身状态情况下无法得知channel是否关闭
+- 关闭一个close channel会导致panic，关闭channel的一方不知道channel是否关闭就去贸然关闭channel很危险
+- 向close channel发送数据会导致panic，同上危险
+两个不优雅关闭channel方法
+- 使用defer-recover机制，即使发生了panic也可以兜底
+- 使用sync.once保证只关闭一次
+对于只有一个sender的channel，直接从sender端关闭
+对于有多个sender，关闭channel解决方案是通过增加一个传递关闭信号的channel，recevier通过信号channel下达关闭数据的channel指令，sender监听到关闭信号后停止发送数据
+或通过增加中间人，M个receiver都向他发送关闭dataCH的请求，收到第一个请求后就直接关闭dataCH的指令
