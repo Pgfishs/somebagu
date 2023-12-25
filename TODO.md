@@ -6,10 +6,10 @@ kanban-plugin: basic
 
 ## 八股TODO
 
-- [ ] Mysql<br>- [ ] Mysql必知必会 p11、12 /~ 12.26<br>- 小林Mysql看看
+- [ ] Mysql<br>- [ ] Mysql必知必会 p11、12 /~ 12.26<br>- [ ] p13、p14 ~12.28<br>- 小林Mysql看看
 - [ ] Redis<br>- 小林Redis 看看
 - [ ] Go八股<br>- [ ] channel节 ~12.26
-- [ ] OS<br>- [ ] 5.1 进程&线程 ~12.25<br>- [ ] 5.2 进程通信 ~12.27
+- [ ] OS<br>- [ ] 5.2 进程通信 ~12.27<br>- [ ] 5.3 ~12.30
 
 
 ## 期末
@@ -25,6 +25,7 @@ kanban-plugin: basic
 
 ## Project
 
+- [ ] 制定计划 ~12.30<br>以及看看八股计划
 
 
 ## Misc
@@ -32,6 +33,7 @@ kanban-plugin: basic
 - [ ] 算法
 - [ ] Note
 - [ ] python和c++大作业<br>- python 1.8截止<br>- c++ unknow只能说
+- [ ] 2023年度总结 ~12.31
 
 
 ***

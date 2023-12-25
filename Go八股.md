@@ -233,4 +233,6 @@ recvq和sendq中分别保存了阻塞发送者和接收者，关闭channel后，
 - 使用sync.once保证只关闭一次
 对于只有一个sender的channel，直接从sender端关闭
 对于有多个sender，关闭channel解决方案是通过增加一个传递关闭信号的channel，recevier通过信号channel下达关闭数据的channel指令，sender监听到关闭信号后停止发送数据
-或通过增加中间人，M个receiver都向他发送关闭dataCH的请求，收到第一个请求后就直接关闭dataCH的指令
+**或**通过增加中间人，M个receiver都向他发送关闭dataCH的请求，收到第一个请求后就直接关闭dataCH的指令
+# channel发送和接收元素的本质
+值的拷贝，无论是从sender goroutine到chan buf，从chan buf到receiver goroutine或直接从sender到receiver
