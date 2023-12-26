@@ -1,9 +1,10 @@
 {
-  "accentColor": "",
-  "theme": "moonstone",
+  "accentColor": "#cd7981",
+  "theme": "obsidian",
   "baseFontSize": 19,
   "monospaceFontFamily": "Consolas",
   "textFontFamily": "Consolas",
   "interfaceFontFamily": "Consolas",
-  "nativeMenus": false
+  "nativeMenus": false,
+  "cssTheme": "Obsidian Nord"
 }

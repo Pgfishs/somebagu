@@ -27,21 +27,21 @@ go都是值传递，直接传进去不会影响原slice，只有将slice指针�
 
 用哈希函数将key分配到不同的bucket里，使用**链表法**和**开放地址法**碰撞（将不同key哈希进同一个bucket）。**链表法**将bucket实现成一个链表，落入同一个bucket中的ke也都会插入这个链表；**开放地址法**是碰撞发生后，通过一定规律在数组后面的“空位”放置新key
 
-# **Map底层如何实现**
+# Map底层如何实现
 
 map内存模型是hmap，buckets是一个指针，指向结构体bmap（桶）。桶里最多装8个key，这8个key是经过哈希计算后，哈希结果是“一类的”，在桶内又会根据key计算出的hash值的高8位决定key落入桶中的什么位置
 
 当map的key和value都不是指针且size都小于128字节时，bmap会被标记为不含指针，避免gc扫描整个hmap。bmap中k-v都是连续存放的（k-k-k....v-v-v...）省略padding字段省内存。每个buckets最多只有8个kv对，当第9个kv对落入当前bucket时，再构建一个bucket通过overflow指针连接起来
 
-# **slice和map分别作函数参数时有什么区别**
+# slice和map分别作函数参数时有什么区别
 
 map作为参数传参时，在函数参数内部对map操作会影响map自身，slice不会。*hmap是指针，slice是结构体，go中都是值传递，*hmap被copy到本地后仍指向同一个map，slice被copy后成为一个新的slice
 
-# **创建map哈希函数选择**
+# 创建map哈希函数选择
 
 程序启动时会检测cpu是否支持aes，支持则使用aes hash否则使用memhash，在函数alginit()中实现。alg字段中的typeAlg包含hash和equal两个函数，hash计算类型的哈希值，equal计算两个类型是否哈希相等
 
-# **Key定位过程**
+# Key定位过程
 
 key经过哈希计算后得到64bit位的哈希值，通过最后B个bit位计算落入什么桶，（如果B=5那么桶数量（buckets长度）为2），再用高8位计算key在buckets中的位置，最开始桶内还没有key，新加入key找到并插入第一个空位
 
@@ -236,3 +236,22 @@ recvq和sendq中分别保存了阻塞发送者和接收者，关闭channel后，
 **或**通过增加中间人，M个receiver都向他发送关闭dataCH的请求，收到第一个请求后就直接关闭dataCH的指令
 # channel发送和接收元素的本质
 值的拷贝，无论是从sender goroutine到chan buf，从chan buf到receiver goroutine或直接从sender到receiver
+# channel引起资源泄漏的情况
+channel会引起goroutine泄露
+goroutine操作channel后，处于发送或接受阻塞状态，而channel处于满或空状态， 一直得不到改变。同时垃圾回收器也不会回收此类资源，导致goroutine处于等待队列中
+程序运行中，对一个channel如果没有任何goroutine引用，gc会将其回收不会引起内存泄漏
+# channel的happened-before
+关于channel的send、send-finished、receive、receive-finished的happened before关系
+- 第n个`send`一定happened before第n个`receive finished`，无论是缓冲型还是非缓冲型
+- 容量为m的缓冲型channel，第n个`receive`一定happened before第n+m个`send finished`
+- 对于非缓冲型的channel，第n个`receive`一定happened before第n个`send finished`
+- channel close一定happened before `receiver`得到通知
+# channel应用
+### 停止信号
+[如何优雅关闭channel相关](./#优雅关闭channel)
+### 任务定时
+与timer结合：实现超时控制、实现定期执行某个任务
+### 解耦生产方和消费方
+服务启动时启动n个worker，作为协程工作池，这些携程工作在一个for{}无限循环中，从某个channel消费工作任务并执行
+### 控制并发数
+需要定时执行几百个任务，但是并发数又不能太高，可以通过channel控制并发数

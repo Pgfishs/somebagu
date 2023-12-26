@@ -6,10 +6,10 @@ kanban-plugin: basic
 
 ## 八股TODO
 
-- [ ] Mysql<br>- [ ] Mysql必知必会 p11、12 /~ 12.26<br>- [ ] p13、p14 ~12.28<br>- 小林Mysql看看
-- [ ] Redis<br>- 小林Redis 看看
-- [ ] Go八股<br>- [ ] channel节 ~12.26
-- [ ] OS<br>- [ ] 5.2 进程通信 ~12.27<br>- [ ] 5.3 ~12.30
+- [ ] Mysql<br>- p13、p14 ~12.28<br>- 小林Mysql看看
+- [ ] Redis<br>- 开个头 ~12.30<br>- 完善分布式锁 & redlock方面 ~12.28
+- [ ] Go八股<br>- channel节 ~12.26<br>- 标准库节定计划 ~12.27
+- [ ] OS<br>-  5.3 多线程冲突 ~12.29<br>-  5.4 如何避免死锁 ~12.31
 
 
 ## 期末
@@ -32,8 +32,11 @@ kanban-plugin: basic
 
 - [ ] 算法
 - [ ] Note
-- [ ] python和c++大作业<br>- python 1.8截止<br>- c++ unknow只能说
-- [ ] 2023年度总结 ~12.31
+- [ ] python和c++大作业<br>- python 1.8截止（准备购买）<br>- c++ unknow只能说
+- [ ] 极客兔兔7days系列 ~寒假远期计划
+- [ ] 个人web
+- [ ] cg 40道题目 ~12.30
+- [ ] 关于channel资源泄露的文章
 
 
 ***
