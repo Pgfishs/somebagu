@@ -193,7 +193,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 288.5
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -212,10 +212,10 @@
   "active": "ee5908a3cad28444",
   "lastOpenFiles": [
     "Daily.md",
-    "TODO.md",
-    "Mysql必知必会.md",
     "到处收集.md",
     "Go八股.md",
+    "TODO.md",
+    "Mysql必知必会.md",
     "Pasted image 20231226205432.png",
     "图解Redis.md",
     "消息队列.md",
