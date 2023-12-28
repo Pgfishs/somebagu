@@ -255,3 +255,11 @@ goroutine操作channel后，处于发送或接受阻塞状态，而channel处于
 服务启动时启动n个worker，作为协程工作池，这些携程工作在一个for{}无限循环中，从某个channel消费工作任务并执行
 ### 控制并发数
 需要定时执行几百个任务，但是并发数又不能太高，可以通过channel控制并发数
+# Context是什么
+goroutine上下文，包含goroutine的运行状态、环境、现场等信息，用来在goroutine之间传递上下文信息，包括取消信号、超市信号、截止时间等
+# Context作用
+在一组goroutine之间传递共享的值、取消信号、deadline等，解决goroutine之间退出通知、元数据传递的功能
+### 传递共享的数据
+传递context类似于ThreadLocal变量
+### 取消goroutine
+### 防止goroutine泄露
