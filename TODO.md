@@ -7,9 +7,9 @@ kanban-plugin: basic
 ## 八股TODO
 
 - [ ] Mysql<br>- 小林Mysql看看
-- [ ] Redis<br>- 开个头 ~12.30<br>- 完善分布式锁 & redlock方面 ~12.28
-- [ ] Go八股<br>- context ~12.29
-- [ ] OS<br>-  5.4 如何避免死锁 ~12.31
+- [ ] Redis<br>- 完善分布式锁 & redlock方面 ~12.30
+- [ ] Go八股<br>- context 12.30
+- [ ] OS<br>-  5.5 ~?
 
 
 ## 期末
