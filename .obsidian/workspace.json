@@ -13,31 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "到处收集.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "b16e304d1eb50b4a",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "思维题.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "e5ee3de1a22e1927",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Go八股.md",
+                "file": "图解Redis.md",
                 "mode": "source",
                 "source": false
               }
@@ -78,7 +54,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -211,15 +187,16 @@
   },
   "active": "ee5908a3cad28444",
   "lastOpenFiles": [
+    "图解Redis.md",
+    "TODO.md",
+    "Go八股.md",
     "图解系统.md",
     "Mysql必知必会.md",
-    "到处收集.md",
     "思维题.md",
-    "Go八股.md",
-    "TODO.md",
+    "Misc/Python速通.md",
+    "Misc",
+    "到处收集.md",
     "场景题.md",
-    "未命名",
-    "图解Redis.md",
     "图解Mysql.md",
     "图解网络.md",
     "Daily.md",
