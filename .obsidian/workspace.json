@@ -47,7 +47,19 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Mysql必知必会.md",
+                "file": "图解Mysql.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "c8dd67aad2503079",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Go八股.md",
                 "mode": "source",
                 "source": false
               }
@@ -187,17 +199,17 @@
   },
   "active": "ee5908a3cad28444",
   "lastOpenFiles": [
-    "图解Redis.md",
-    "TODO.md",
+    "图解Mysql.md",
     "Go八股.md",
     "图解系统.md",
+    "TODO.md",
+    "图解Redis.md",
     "Mysql必知必会.md",
     "思维题.md",
     "Misc/Python速通.md",
     "Misc",
     "到处收集.md",
     "场景题.md",
-    "图解Mysql.md",
     "图解网络.md",
     "Daily.md",
     "消息队列.md",

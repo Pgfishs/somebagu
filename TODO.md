@@ -6,10 +6,11 @@ kanban-plugin: basic
 
 ## 八股TODO
 
-- [ ] Mysql<br>- 小林Mysql基础篇 ~1.25<br>- 必知必会 忘了到哪了
-- [ ] Redis<br>- 完善分布式锁 & redlock方面 ~ 1.25<br>- 小林 常见面试题 ~1.27
-- [ ] Go八股<br>- reflect ~1.24
+- [ ] Mysql<br>- 索引基础篇 ~1.27<br>- 必知必会 忘了到哪了
+- [ ] Redis<br>- 小林 常见面试题 ~1.27
+- [ ] Go八股<br>- 编译 ~1.27
 - [ ] OS<br>-  调度算法 ~1.26
+- [ ] 计网<br>- 准备开始复习 ~1.26
 
 
 ## Project
@@ -30,7 +31,7 @@ kanban-plugin: basic
 
 ## 重修
 
-- [ ] 概率论<br>- 高数叔第三节 -1.18
+- [ ] 概率论
 - [ ] 线代
 
 
