@@ -297,3 +297,71 @@ DeepEqual比较是否深度相同，一般情况下递归使用 == 比较，特�
 **限制二**：不同类型指针不能相互转换
 **限制三**：不同类型指针不能`== 或 !=`比较，只有类型相同或可以相互转化才可以进行比较，可以直接对nil进行比较
 **限制四**：不同类型指针变量不能相互赋值
+# 逃逸分析
+分析指针动态范围叫逃逸分析，当一个指针的对象被多个方法或线程引用时，指针发生了逃逸
+Go的逃逸分析是编译器指向静态代码分析后堆内存管理进行的优化和简化，决定一个变量时分配到堆还是栈
+Go分析逃逸最基本原则是：一个函数反对一个变量的引用，那么它就会发生逃逸。Go中变量经过编译器证明返回后不会再被引用，才会被分配到栈上，其他情况下分配到堆上
+# GoRoot和GoPath
+GoRoot时Go安装路径，比较重要的有compile编译器，link连接器
+GoPath提供一个可以寻找`.go`源码的路径，是一个工作空间的概念
+# Go编译过程
+编译过程：对源文件进行词法分析、语法分析、语义分析、优化、生成汇编文件。然后汇编器将汇编代码变为机器可执行的指令
+# Go编译命令
+### go build
+编译指定packages里源码路径和依赖包，会忽略`*_test.go`文件
+### go install
+编译并安装指定代码包和依赖包
+### go run
+编译并允许代码文件
+# goroutine和线程区别
+#### 内存消耗
+创建一个goroutine栈内存消耗为2KB，运行中会扩容。创建一个thread则需要消耗1MB栈内存，还需要"a guard page"区域用于和其他thread栈空间隔离
+使用goroutine处理请求非常轻松，而是用线程处理请求则浪费资源，容易出现OOM
+#### 创建和销毁
+thread是内核级的，创建和销毁都有巨大消耗，而goroutine是由go runtime管理的，是用户级的
+#### 切换
+线程切换时需要保存各种寄存器，而goroutine只需要三个寄存器：Program Counter、Stack Pointer和BP
+线程切换需要1000-1500ns，而goroutine只要200ns
+# Go Scheduler
+Go执行由GoProgram和Runtime构成，之间通过函数调用实现内存管理、channel通信等功能，用户程序进行的系统调用会被Runtime拦截帮助进行调度和垃圾回收
+Runtime维护所有goroutine，通过scheduler进行调度，goroutine和threads是独立的，但goroutine要依赖threads才能执行
+### Scheduler底层原理
+三个基础结构体实现goroutine调度，G、M、P
+g代表一个goroutine，包含：表示goroutine栈的一些字段，只是当前goroutine状态，指示当前运行到的指令地址，也就是PC值
+m代表内核线程，包含正在运行的goroutine等字段
+p代表虚拟的Processor，维护一个储运Runnable状态的g字段，m需要获得p才能运行g
+还有一个核心结构体sched总揽全局
+Runtime创建时会启动一些G，垃圾回收/执行调度/运行代码，同时会创建一些M开始G运行
+内核线程在核心上调度，而G在M上调度
+### 核心思想
+- reuse threads
+- 限制同时运行的线程数为N（CPU核心数）
+- 线程私有的runqueues，并可以从其他线程的stealing goroutine运行，线程阻塞后可以将runqueues传递给其他线程
+当一个线程阻塞时，将和他绑定P上的goroutines转移到其他线程
+# Goroutine调度时机
+有机会进行调度
+
+|情形|说明|
+|---|---|
+|使用关键字go|go创建一个新的goroutine，scheduler会考虑调度|
+|GC|进行GC的goroutine在M上运行，所以肯定会发生调度。scheduler还会做其他很多的调度，比如调度不涉及堆访问的goroutine运行。GC不管栈上内存，只回收堆上内存|
+|系统调用|goroutine系统调用时，会阻塞M，所以他会被调走，同时创建一个新goroutine调度上来|
+|内存同步访问|atomic、mutex、channe等操作阻塞goroutine，等条件满足后还会被调度上来重新运行|
+# M:N模型
+runtime负责goroutine生老病死，runtime会在程序启动时候，创建M个线程，之后创建的N的goroutine都会在这M个线程上执行，这就是M:N模型
+同一时刻一个线程只能跑一个goroutine，发生阻塞时runtime会把当前goroutine调走，执行其他goroutine，榨干CPU
+# 工作窃取
+scheduler职责是将所有处于runnable的goroutine均匀分配到P上运行的M，当一个P发现自己的LRQ没有G时，会从其他P偷一些G来运行
+scheduler使用M:N模型，任意时刻M个goroutine（G）要分配到N个内核线程（M），跑在最多位GOMAXPROCS的逻辑处理器上（P），每个M必须依附一个P，每个P同一时刻只能运行一个M，如果P上M阻塞了，就需要其他M来运行P中LRQ的goroutine
+# GPM是什么
+### G
+取goroutine首字母，主要保存goroutine一些状态信息和CPU一些寄存器值，比如IP寄存器，以便轮到本goroutine执行时，CPU知道如何开始执行
+	goroutine被调离CPU时，调度器负责把CPU寄存器值存在g的成员变量中，当goroutine被调度起来时，调度器负责把g成员变量恢复到CPU寄存器中
+g结构体关联了两个比较简单的结构体，stack表示goroutine运行时的栈，gobuf保存了PC、SP等寄存器的值
+### M
+machine首字母，代表一个工作线程/系统线程，G需要调度到M上才能运行
+结构体m保存了M的栈信息，当前M上运行的G信息，绑定的P信息。当M无事可做时，在休眠前会自旋的找工作：检查全局队列，查看network poller，试图执行gc，偷别人的任务
+### P
+processor，为M执行提供上下文，保存M执行G时一些资源，比如本地可运行G队列、memory cache等
+一个M只有绑定P才能执行goroutine，M被阻塞时P会传递给其他M
+刚开始运行初始化时，所有P都在_Pgcstop，随着P初始化，被置于_Pidle，当M需要运行时，P进入Prunning状态；当G需要进入系统调用时，P被设置为_Psycall，被系统监控抢夺会被修改为_Pidle；如果在程序运行中发生GC，P会被设置为_Pgcstop，在runtime.startTheWorld时调整为_Prunning
