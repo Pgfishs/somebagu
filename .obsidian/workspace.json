@@ -115,7 +115,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 299.5
   },
   "right": {
     "id": "59aeebc8d567b67e",
@@ -198,8 +198,8 @@
   },
   "active": "a5297cd159a6be58",
   "lastOpenFiles": [
-    "图解Mysql.md",
     "图解系统.md",
+    "图解Mysql.md",
     "Go八股.md",
     "图解Redis.md",
     "TODO.md",
