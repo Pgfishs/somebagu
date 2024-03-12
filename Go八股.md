@@ -365,3 +365,18 @@ machine首字母，代表一个工作线程/系统线程，G需要调度到M上�
 processor，为M执行提供上下文，保存M执行G时一些资源，比如本地可运行G队列、memory cache等
 一个M只有绑定P才能执行goroutine，M被阻塞时P会传递给其他M
 刚开始运行初始化时，所有P都在_Pgcstop，随着P初始化，被置于_Pidle，当M需要运行时，P进入Prunning状态；当G需要进入系统调用时，P被设置为_Psycall，被系统监控抢夺会被修改为_Pidle；如果在程序运行中发生GC，P会被设置为_Pgcstop，在runtime.startTheWorld时调整为_Prunning
+# Go scheduler初始化
+源码中的结构体是`schedt`，保存调度器的状态信息、全局可运行队列G等，程序运行过程中，`schedt`只有一份实体，维护了调度器所有信息
+proc.go和runtime2.go文件中，有重要的全局变量，程序初始化时，全局变量会被初始化为对应类型的零值
+调整SP，将SP调整到地址是16倍数的位置，CPU中有一组SSE指令，出现的内存地址必须是16的倍数
+初始化g0栈，g0栈为运行runtime代码提供一个环境
+主线程绑定m0。因为m0是全局变量，而m0又要绑定到工作线程才能执行，runtime会启动多个工作线程，每个线程都会绑定一个m0，且代码中要保持一致，都用m0显示；TLS机制保证一个线程内部各个函数都能访问，其他线程不能访问的的变量
+初始化m0，涉及到`schedinit`：设置最多工作线程数、初始化m0、初始化P个数（CPU核数），初始化所有P，将m0挂载到allm上（若创建新m会与m0相连）
+初始化allp，设置procs，决定创建p的数量
+# 主goroutine如何创建
+启动一个goroutine时候，在go编译器作用下，最终会转化成`newproc`函数
+`newproc`有两个参数，新创建goroutine需要执行的任务fn，代表一个函数func；还有fn参数的大小`siz`
+**为什么要传fn参数大小**，因为goroutine和线程一样都有自己的栈，goroutine的栈比较小，newproc函数创建一个新的goroutine函数来执行fn函数，在新goroutine上执行指令就需要新goroutine的栈，通过`siz`决定拷贝数据大小，从老goroutine转移到新goroutine上
+`newproc`第二个参数`funcval`是一个变长结构
+[还是看网站吧](https://golang.design/go-questions/sched/main-goroutine/)
+# g0栈和用户栈如何切换

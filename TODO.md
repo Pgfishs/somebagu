@@ -6,10 +6,9 @@ kanban-plugin: basic
 
 ## 八股TODO
 
-- [ ] Mysql<br>- 看B+树 ~1.30<br>- 必知必会 忘了到哪了
-- [ ] Redis<br>- 小林 常见数据类型 ~2.1
-- [ ] Go八股<br>- 调度器 ~2.4
-- [ ] OS<br>-  I/O复用 ~1.30
+- [ ] Mysql<br>- Mysql Like失效 3.8
+- [ ] Redis<br>- 小林 AOF 3,8
+- [ ] Go八股<br>- main goroutine 3.8
 - [ ] 计网<br>- 准备开始复习 ~1.27
 
 
