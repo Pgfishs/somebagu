@@ -65,7 +65,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -131,7 +132,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "图解Redis.md",
+                "file": "图解Mysql.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -143,7 +144,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "图解Redis.md",
+                "file": "图解Mysql.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -171,7 +172,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "图解Redis.md"
+                "file": "图解Mysql.md"
               }
             }
           }
@@ -196,10 +197,10 @@
       "workspaces:管理工作区布局": false
     }
   },
-  "active": "a5297cd159a6be58",
+  "active": "aa350289cbe6dbf1",
   "lastOpenFiles": [
-    "图解Mysql.md",
     "图解Redis.md",
+    "图解Mysql.md",
     "TODO.md",
     "Go八股.md",
     "图解系统.md",
