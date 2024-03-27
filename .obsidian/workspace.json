@@ -42,8 +42,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "9e024a76625d1bb1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "图解Redis.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -109,7 +122,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "图解Mysql.md",
+                "file": "图解Redis.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -121,7 +134,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "图解Mysql.md",
+                "file": "图解Redis.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -149,7 +162,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "图解Mysql.md"
+                "file": "图解Redis.md"
               }
             }
           }
@@ -174,18 +187,19 @@
       "workspaces:管理工作区布局": false
     }
   },
-  "active": "a5297cd159a6be58",
+  "active": "9e024a76625d1bb1",
   "lastOpenFiles": [
-    "图解Redis.md",
-    "消息队列.md",
+    "Pasted image 20240327210542.png",
+    "图解系统.md",
     "Go八股.md",
     "图解Mysql.md",
+    "图解Redis.md",
+    "消息队列.md",
     "图解Mysql/Mysql有哪些锁/行级锁.md",
     "Misc/Python速通.md",
     "TODO.md",
     "图解Mysql/Mysql有哪些锁",
     "图解Mysql",
-    "图解系统.md",
     "图解网络.md",
     "Mysql必知必会.md",
     "思维题.md",
