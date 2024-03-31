@@ -55,8 +55,7 @@
               }
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -122,7 +121,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "图解Redis.md",
+                "file": "图解Mysql.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -134,7 +133,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "图解Redis.md",
+                "file": "图解Mysql.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -162,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "图解Redis.md"
+                "file": "图解Mysql.md"
               }
             }
           }
@@ -187,13 +186,13 @@
       "workspaces:管理工作区布局": false
     }
   },
-  "active": "9e024a76625d1bb1",
+  "active": "a5297cd159a6be58",
   "lastOpenFiles": [
+    "图解Redis.md",
     "Pasted image 20240327210542.png",
     "图解系统.md",
     "Go八股.md",
     "图解Mysql.md",
-    "图解Redis.md",
     "消息队列.md",
     "图解Mysql/Mysql有哪些锁/行级锁.md",
     "Misc/Python速通.md",
@@ -221,7 +220,6 @@
     "Pasted image 20231219231556.png",
     "Pasted image 20231218214427.png",
     "Pasted image 20231217225931.png",
-    "images/Pasted image 20231217225931.png",
     "images",
     "新建文件夹",
     "2023-12-14.md"
