@@ -526,7 +526,19 @@ undo log是一种用于撤销回滚的日志，在事务未提交之前Mysql会�
 undo log还可通过ReadView+undo log实现MVCC多版本并发控制，对于*读提交*和*可重复读*级别，快照读（select）都是通过ReadView+undo log实现；通过判断ReadView字段并顺undo log版本链找到可见性记录
 - *读提交*在每个select都会生成一个新的ReadView，意味着事务期间多次读取同一数据，前后可能会出现不一致，因为另一个事务可能修改了数据
 - *可重复读*在创建事务时创建一个ReadView，后续整个事务都使用这个ReadView
-
 则undo log两大作用
 - 实现事务回滚，保证事务原子性
 - 实现MVCC关键因素之一
+### Buffer Pool
+InnoDB设计了BufferPool缓冲池，要更新记录时，从硬盘读取在内存中修改这个记录，再写入BufferPool中提高数据库读写性能
+- 读取数据时，如果数据存在于BufferPool中，客户端会直接读取BufferPool中数据，否则再去磁盘中读取
+- 修改数据时，如果数据存在BufferPool中，则直接修改BufferPool中数据所在页，再将其设置为脏页，为了减少磁盘IO，不会立即将脏页写入磁盘，后续由后台线程选择合适时机写入磁盘
+#### BufferPool缓存什么
+Buffer Pool按*页*划分；Mysql启动时，InnoDB为BufferPool申请连续内存空间，然后按照默认16KB分页，BufferPool中页就叫缓存页，随着程序运行会有磁盘上的页缓存到BufferPool中
+BufferPool除了缓存*索引页*和*数据页*，还包括了*Undo页、插入缓存、自适应哈希索引、锁信息等*
+**Undo页记录什么**
+开启事务后，InnoDB更新记录前，先记录相应Undolog，会写入BufferPool的Undo页面中
+**查询记录一次缓存一条记录吗**
+查询一条记录时，InnoDB会把整个页数据加载到BufferPool中，再通过页里页目录区定位到具体某条记录
+### Redo log
+为了防止断电导致数据丢失，有记录需要更新时InnoDB会先更新内存并标记为脏页，再将本次对这个页的修改以redo log记录，后续由后台线程将缓存在BufferPool的脏页刷新到磁盘里，这就是WAL（写操作不是立刻写在磁盘上，而是先写日志等待合适时机再写入磁盘）
