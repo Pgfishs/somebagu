@@ -542,3 +542,32 @@ BufferPool除了缓存*索引页*和*数据页*，还包括了*Undo页、插入�
 查询一条记录时，InnoDB会把整个页数据加载到BufferPool中，再通过页里页目录区定位到具体某条记录
 ### Redo log
 为了防止断电导致数据丢失，有记录需要更新时InnoDB会先更新内存并标记为脏页，再将本次对这个页的修改以redo log记录，后续由后台线程将缓存在BufferPool的脏页刷新到磁盘里，这就是WAL（写操作不是立刻写在磁盘上，而是先写日志等待合适时机再写入磁盘）
+#### 什么是Redo log
+是物理日志，记录了某个数据页做了什么修改，每当执行一个事务就会产生这样的一条或多条物理日志
+在事务提交时，只要先将redo log持久化到磁盘，不需要等到缓存在Buffer Pool的脏页数据持久化到磁盘。系统奔溃时，redo log已经持久化，等待Mysql重启后根据Redolog内容恢复到最新状态
+开启事务后，InnoDB更新前首先要记录对应Undo log，会写入BufferPool的Undo页面，在内存修改该Undo页面后，需要记录对应Redo log
+- redo log记录了此次事务*完成后*的状态，记录更新后的值
+- undo log记录此次事务*开始前*的状态，记录更新前的值
+事务提交前发生奔溃，根据undo log回滚；事务提交后奔溃，重启后通过redo log恢复事务，redo log保证了**持久性**
+写入redo log使用了追加操作，磁盘操作是**顺序写**，而写入数据需要先找到写入位置，然后再写入磁盘，操作是**随机写**，磁盘的顺序写性能比随机写高效，redo log写入磁盘开销小；这也是WAL优点，将磁盘随机写变为了顺序写
+redo log产生后也不是直接写入磁盘，而是存进redo log buffer，每当产生一条redo log先写入buffer，后续持久化进磁盘中
+#### Redo log什么时候刷盘
+- Mysql正常关闭时
+- redo log buffer记录的写入量大于redo log buffer内存的一半时，会触发落盘
+- InnoDB后台线程每隔一秒，将redo log buffer持久化到磁盘
+- 每次事物提交时都将缓存在redo log buffer的redo log持久化到磁盘，通过innodb_flush_log_at_trx_commit控制
+**innodb_flush_log_at_trx_commit**
+- 参数为**0**时，代表每次事物提交时，还是将**redo log留在buffer中**，该模式下事物提交时不会主动触发写入磁盘的操作
+- 参数为**1**时，表示每次事物提交时，都将**buffer中的redo log直接持久化到磁盘**，保证Mysql重启后数据不会丢失
+- 参数为**2**时，表示每次事物提交时，都只是缓存在buffer中的redo log写道redo log文件，缓存到对应Page Cache
+InnoDB后台线程每隔一秒
+- 参数为0：会把缓存在redo log buffer中的redo log通过`write()`写进操作系统Page Cache，然后调用`fsync()`持久化进磁盘。参数为0的策略，Mysql奔溃会导致上一秒所有事务数据的丢失
+- 参数为2：调用`fsync()`，将缓存在操作系统Page Cache的redo log持久化进磁盘。参数为0更安全，Mysql进程奔溃不会丢失数据，只有系统奔溃或断电情况下，上一秒事务数据才会丢失
+#### Redo log文件写满了怎么办
+默认InnoDB有一个重做日志文件组，由两个redo log文件组成：`ib_logfile0`&`ib_logfile1`。在重做日志中，每个redo log file大小是一致的，且设置上限为1GB，总共可以记录2GB操作
+重做日志文件是**循环写**，所以InnoDB会先写0文件，写满后切换至1文件，再被写满后会写换回0文件
+InnoDB用write pos表示redo log当前记录写到的位置，checkpoint表示当前要擦除的位置
+- write pos和checkpoint都是顺时针移动
+- write pos ~ checkpoint之间记录新操作记录
+- checkpoint ~ write pos记录待落盘脏页
+如果write pos追上checkpoint，代表**redo log文件写满了，Mysql将不能再执行新更新操作，Mysql将会被阻塞，会停下先将Buffer Pool脏页刷新进磁盘，然后标记哪些redo log可以被删除，等删除后checkpoint会向后移动**，Mysql恢复正常
