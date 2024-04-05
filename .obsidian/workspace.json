@@ -134,10 +134,10 @@
               "type": "backlink",
               "state": {
                 "file": "图解Mysql.md",
-                "collapseAll": true,
+                "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
-                "showSearch": true,
+                "showSearch": false,
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": false
@@ -165,8 +165,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -186,7 +185,7 @@
       "workspaces:管理工作区布局": false
     }
   },
-  "active": "a5297cd159a6be58",
+  "active": "197003fddae38853",
   "lastOpenFiles": [
     "图解Redis.md",
     "图解Mysql.md",

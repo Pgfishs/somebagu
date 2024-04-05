@@ -571,3 +571,33 @@ InnoDB用write pos表示redo log当前记录写到的位置，checkpoint表示�
 - write pos ~ checkpoint之间记录新操作记录
 - checkpoint ~ write pos记录待落盘脏页
 如果write pos追上checkpoint，代表**redo log文件写满了，Mysql将不能再执行新更新操作，Mysql将会被阻塞，会停下先将Buffer Pool脏页刷新进磁盘，然后标记哪些redo log可以被删除，等删除后checkpoint会向后移动**，Mysql恢复正常
+### Bin log
+Mysql完成一条更新操作后，Server层还会生成一条binlog，等事务提交后会将该事务执行过程中所有的binglog统一写入binlog文件；binlog记录了所有数据库表结构变更和表数据修改的日志，不会记录查询类的操作
+Mysql最开始没有InnoDB，自带的是MyISAM，通过binlog进行归档
+#### redo log 和 bin log区别
+##### 适用对象不同
+- binlog是Mysql的Server层实现的日志，所有存储引擎都可以使用
+- redo log是InnoDB实现的日志
+##### 文件格式不同
+- bin log有三个格式
+  - Statement：每一条修改数据的SQL都被记录到binlog中，主从复制在slave根据SQL语句重现；存在动态函数的问题，主从库复制数据不一致
+  - ROW：记录最终行数据被修改成什么样，不会出现Statement下动态函数问题；但每行数据都会记录，导致bin log文件过大
+  - MIXED：包含STATEMENT和ROW
+- redo log是物理日志，记录的是数据页的修改
+##### 写入方式不同
+- bin log是追加写，写满一个文件就创建新的文件继续写
+- redo log是循环写，空间大小固定。全部写满就从头开始，保存未被刷入磁盘的脏页日志
+##### 用途不同
+- bin log用于备份恢复，主从复制。全量日志可以恢复被删除的数据库数据
+- redo log用于掉电故障恢复。增量日志无法实现删除恢复
+#### 主从复制的实现
+Mysql主从复制依赖于bin log，记录Mysql所有变化以二进制保存在磁盘上，复制过程就是将bin log数据从主库传输到从库，一般是**异步**执行的
+- 写入Binlog：主库写binlog日志，提交事务，并更新本地存储数据
+- 同步Binlog：从库创建IO线程，链接主库log dump线程，把binlog写入relay log中继日志中
+- 回放Binlog：从库创建回放binlog线程，读取relaylog并回放，更新数据
+从库数量增加，IO线程变多，主库也要创建同样多的log dump处理复制请求，对主库资源消耗比较高，同时还受限于主库网络宽带
+Mysql主要有三种复制模型
+- 同步复制：性能差，要等待复制所有节点才返回响应；可用性差，主从库任意一个出现问题都会影响业务
+- 异步复制：一旦主库宕机，数据就会丢失
+- 半同步复制：兼顾异步同步优点
+#### binlog什么时候刷盘
