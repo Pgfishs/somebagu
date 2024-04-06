@@ -601,3 +601,55 @@ Mysql主要有三种复制模型
 - 异步复制：一旦主库宕机，数据就会丢失
 - 半同步复制：兼顾异步同步优点
 #### binlog什么时候刷盘
+事务执行过程中，先把日志写进binlog cache，事务提交时再写入binlog文件中
+一个事务的binlog是不能被拆开的，无论事务大小都需要保证一次性写入，否则每当执行begin/start时会默认提交上一个事务，导致被拆分成多个事务执行，破坏了原子性
+Mysql给每个线程分配了一片内存缓冲binlog，即binlog cache，超过cache大小则需要暂存到磁盘中；事务提交时，执行器把binlog cache中的完整事务写入到binlog文件中，并清空cache
+每个线程都有自己的cache，但是写入的是同一个binlog文件
+- write把日志写入binlog文件，但是并没有持久化，只是保存在了page cache中
+- fsync将数据持久化，涉及到磁盘IO
+Mysql提供sync_binlog控制binlog刷盘频率
+- =0时，每次提交事务只write不fsync，由操作系统决定何时持久化
+- =1时，事务会提交write，然后马上fsync
+- =N(>1)时，表示每次提交事务都write，N次后才fsync，一般设置为100~1000
+### Update语句执行过程
+1. 执行器负责具体执行，调用存储引擎接口，通过主键索引树搜索获取id=1记录
+   - 如果在buffer pool中，直接返回给执行器更新
+   - 不在buffer pool中，就从磁盘读入buffer pool再返回给执行器
+2. 执行器得到记录后，判断更新前后记录是否一致
+   - 一致则不进行后续更新
+   - 否则将更新前后记录都作参数传给InnoDB，让InnoDB执行更新操作
+3. 开启事务，InnoDB更新记录前，记录相应undo log，写入buffer pool中Undo页面，记录对应redo log
+4. InnoDB开始更新记录，先更新内存并标记为脏页，然后写入redo log，利用WAL完成持久化
+### 为什么要两阶段提交
+redo log和bin log事务提交后都到持久化到硬盘，可能出现半成功状态导致日志逻辑不一致
+- redo log刷入磁盘后，mysql宕机，binlog未来得及写入。mysql通过redolog将bufferpool中id = 1恢复到新值，但是binlog没有记录这个日志，主从同步后从库和主库数据不一致
+- binlog刷盘后；mysql宕机redo log未写入。redo log还未写入导致恢复后事务无效，主库无法恢复新数据，但binlog同步到从库执行更新语句，导致主从库数据不一致
+Mysql通过两阶段提交**准备+提交**解决
+#### 两阶段提交过程
+Mysql通过**内部XA事务**维护binlog和redolog一致性，分两阶段完成XA事务提交
+- prepare阶段：将XID（XA事务ID）写入redo log，将redo log对应事务状态设置为prepare，将redo log持久化进磁盘
+- commit：将XID写入binlog并持久化到磁盘，调用引擎提交事务接口将redo log设置为commit（此时不需要持久化，只需要write到文件的page cache）
+#### 异常重启出现的现象
+redolog写入磁盘后，无论binlog是否写入磁盘，只要为commit此时redolog都处于prepare阶段。Mysql重启后会顺序扫描redolog文件，碰到prepare的redo log会用XID去找binlog对应XID
+- 没有对应XID，说明redolog刷盘后但binlog未完成刷盘，需回滚事务
+- 有对应XID说明redolog和binlog都完成了刷盘，则提交事务
+两阶段是以binlog写成功作为事务提交成功的标识，因为binlog写成功后就能在binlog中找到redolog对应XID，同时也保证了主从库一致性
+事务未提交时redo log也可能被持久化到磁盘，redolog可以在事务为提交之前持久化到磁盘，但是binlog必须在事务提交之后才可以持久化到磁盘
+#### 两阶段提交问题
+- 磁盘IO次数高：每次都要进行两次fsync，一次redo一次bin
+- 锁竞争激烈：多事务情况下，不能保证两者提交顺序一致，所以要加锁保证事务原子性
+**组提交**
+Mysql提供binlog组提交，多个事务提交时，会将多个binlog刷盘操作合并成一个，针对commit阶段拆分为三个阶段
+- flush：多个事务按进入顺序将binlog从cache写入文件
+- sync：对binlog文件进行fsync
+- commit：各个事务按顺序做InnoDB Commit操作
+每个阶段都有一个队列，有锁进行保护保证顺序写入
+**redo log组提交**
+5.7有redo log组提交
+- flush：第一个到达事务成为leadre，后续事务都是follower；获取队列事务组，由leader对redo log进行write+fsync，一次将同组事务redolog刷盘；完成prepare后，将binlog写入文件
+- sync：写入binlog文件后，等待一段时间，组合更多事务binlog一起刷盘（sync用于支持binlog组提交）
+- commit：调用引擎提交事务接口，将redolog设置为commit
+### 优化Mysql磁盘IO方法
+- 设置组提交参数，延迟binlog刷盘时机和次数，可能会增加语句相应时间，但是binlog都写入了pagecache不会丢失数据
+- 将sync_binlog设置大于1延迟binlog刷盘时机，但是有数据丢失风险
+- 设置innodb_flush_log_at_trx_commit设置为2，每次事务提交时，都将缓存在redo log buffer的log写入redolog文件，由操作系统控制持久化磁盘时机，有数据丢失风险
