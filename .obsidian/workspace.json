@@ -4,52 +4,28 @@
     "type": "split",
     "children": [
       {
-        "id": "92cdf3e44ef87013",
+        "id": "565c9cf07847c009",
         "type": "tabs",
         "children": [
           {
-            "id": "a5297cd159a6be58",
+            "id": "4da6f7db863bafbe",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "到处收集.md",
+                "file": "牛客面经总结.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "c8dd67aad2503079",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Go八股.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "46ecc9f211a64a43",
+            "id": "56cded4638ef8fc7",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
                 "file": "图解系统.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "9e024a76625d1bb1",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "图解Redis.md",
                 "mode": "source",
                 "source": false
               }
@@ -121,7 +97,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "到处收集.md",
+                "file": "牛客面经总结.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -133,7 +109,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "到处收集.md",
+                "file": "牛客面经总结.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -161,7 +137,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "到处收集.md"
+                "file": "牛客面经总结.md"
               }
             }
           }
@@ -185,24 +161,28 @@
       "workspaces:管理工作区布局": false
     }
   },
-  "active": "a5297cd159a6be58",
+  "active": "197003fddae38853",
   "lastOpenFiles": [
-    "图解Mysql.md",
-    "图解Redis.md",
-    "Pasted image 20240327210542.png",
+    "images/Pasted image 20240507211822.png",
+    "images/Pasted image 20240327210542.png",
     "图解系统.md",
+    "牛客面经总结.md",
+    "图解Redis.md",
+    "到处收集.md",
+    "Pasted image 20240507211822.png",
+    "图解网络.md",
     "Go八股.md",
+    "图解Mysql.md",
+    "Pasted image 20240327210542.png",
     "消息队列.md",
     "图解Mysql/Mysql有哪些锁/行级锁.md",
     "Misc/Python速通.md",
     "TODO.md",
     "图解Mysql/Mysql有哪些锁",
     "图解Mysql",
-    "图解网络.md",
     "Mysql必知必会.md",
     "思维题.md",
     "Misc",
-    "到处收集.md",
     "场景题.md",
     "Daily.md",
     "README.md",
@@ -217,8 +197,6 @@
     "未命名.canvas",
     "images/Pasted image 20231222164504.png",
     "Pasted image 20231219231556.png",
-    "Pasted image 20231218214427.png",
-    "Pasted image 20231217225931.png",
     "images",
     "新建文件夹",
     "2023-12-14.md"
