@@ -20,6 +20,18 @@
             }
           },
           {
+            "id": "1053b2bb5e2a8177",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Go八股.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
             "id": "56cded4638ef8fc7",
             "type": "leaf",
             "state": {
@@ -31,7 +43,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -97,7 +110,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "牛客面经总结.md",
+                "file": "Go八股.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -109,7 +122,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "牛客面经总结.md",
+                "file": "Go八股.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -137,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "牛客面经总结.md"
+                "file": "Go八股.md"
               }
             }
           }
@@ -161,17 +174,17 @@
       "workspaces:管理工作区布局": false
     }
   },
-  "active": "197003fddae38853",
+  "active": "1053b2bb5e2a8177",
   "lastOpenFiles": [
+    "图解系统.md",
+    "Go八股.md",
+    "牛客面经总结.md",
     "images/Pasted image 20240507211822.png",
     "images/Pasted image 20240327210542.png",
-    "图解系统.md",
-    "牛客面经总结.md",
     "图解Redis.md",
     "到处收集.md",
     "Pasted image 20240507211822.png",
     "图解网络.md",
-    "Go八股.md",
     "图解Mysql.md",
     "Pasted image 20240327210542.png",
     "消息队列.md",
@@ -196,7 +209,6 @@
     "images/Pasted image 20231225214257.png",
     "未命名.canvas",
     "images/Pasted image 20231222164504.png",
-    "Pasted image 20231219231556.png",
     "images",
     "新建文件夹",
     "2023-12-14.md"
